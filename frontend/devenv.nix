@@ -17,13 +17,13 @@ in
   };
   languages.typescript.enable = true;
 
-  # tasks = {
-  #   "frontend:getDependencies" = {
-  #     exec = "bun install --cwd ${root}";
-  #     status = "test -d ${root}/node_modules";
-  #     before = [ "devenv:enterShell" "devenv:enterTest" ];
-  #   };
-  # };
+  tasks = {
+    "frontend:getDependencies" = {
+      exec = "bun install --cwd ${root}";
+      status = "test -d ${root}/node_modules";
+      before = [ "devenv:enterShell" "devenv:enterTest" ];
+    };
+  };
 
   processes.frontend.exec = ''
     bun run --cwd ${root} dev --port ${port}
