@@ -26,7 +26,7 @@ in
   };
 
   processes.frontend.exec = ''
-    bun run --cwd ${root} dev --port ${port}
+    bun run --cwd ${root} dev
   '';
 
   enterTest = ''

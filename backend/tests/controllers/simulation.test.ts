@@ -12,11 +12,26 @@ describe('SimulationController', () => {
         });
 
         const expected = {
-            netAmount: {
-                capital: 1001,
-                fee: 10.01,
-                profit: 1021.321301,
-            },
+            netAmount: [
+                {
+                    capital: 1001,
+                    fee: 0,
+                    month: 1,
+                    profit: 1011.01,
+                },
+                {
+                    capital: 1001,
+                    fee: 0,
+                    month: 2,
+                    profit: 1021.1201,
+                },
+                {
+                    capital: 1001,
+                    fee: 10.01,
+                    month: 3,
+                    profit: 1021.321301, // expected profit - fee
+                },
+            ],
         };
         expect(res.body).toEqual(expected);
     });

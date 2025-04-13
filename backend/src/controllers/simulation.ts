@@ -65,30 +65,30 @@ export default class SimulationController {
 
     public async exportToCSV(req: Request, res: Response) {
         try {
-            const data: NetProfit = req.body.netAmount;
+            const data: NetProfit[] = req.body.netAmount;
 
             if (data === undefined) {
                 res.status(400).json({
                     error: 'Invalid body provided',
-                    message: 'body is missing netAmount object',
+                    message: 'body is missing netAmount object array',
                 });
                 return;
             }
-            if (data.capital === undefined) {
+            if (data[0] && data[0].capital === undefined) {
                 res.status(400).json({
                     error: 'Invalid body provided',
                     message: 'netAmount object is missing capital field',
                 });
                 return;
             }
-            if (data.fee === undefined) {
+            if (data[0] && data[0].month === undefined) {
                 res.status(400).json({
                     error: 'Invalid body provided',
-                    message: 'netAmount object is missing fee field',
+                    message: 'netAmount object is missing month field',
                 });
                 return;
             }
-            if (data.profit === undefined) {
+            if (data[0] && data[0].profit === undefined) {
                 res.status(400).json({
                     error: 'Invalid body provided',
                     message: 'netAmount object is missing profit field',
@@ -99,16 +99,21 @@ export default class SimulationController {
             const csvOpts = {
                 fields: [
                     {
-                        label: 'Capital',
-                        value: (record: NetProfit) => record.capital,
+                        label: 'Mes',
+                        value: (record: NetProfit) => record.month,
                     },
                     {
-                        label: 'Fee',
-                        value: (record: NetProfit) => record.fee,
+                        label: 'Capital Inicial (USD)',
+                        value: (record: NetProfit) => `$${record.capital}`,
                     },
                     {
-                        label: 'Net Profit',
-                        value: (record: NetProfit) => record.profit,
+                        label: 'Monto Acumulado (USD)',
+                        value: (record: NetProfit) => `$${record.profit}`,
+                    },
+                    {
+                        label: 'Fee (USD)',
+                        // We only apply the fee at the final month, omit it when the month fee is 0
+                        value: (record: NetProfit) => (record.fee < 0 ? ' ' : `$${record.fee}`),
                     },
                 ],
             };

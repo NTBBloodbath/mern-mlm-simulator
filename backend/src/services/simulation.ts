@@ -1,6 +1,7 @@
 export interface NetProfit {
     capital: number;
     fee: number;
+    month: number;
     profit: number;
 }
 
@@ -12,21 +13,36 @@ export default class SimulationService {
      * @param isCompound Whether the profits are compound or not
      * @returns NetProfit
      */
-    public calculateNetProfit(capital: number, months: number, isCompound: boolean): NetProfit {
+    public calculateNetProfit(capital: number, months: number, isCompound: boolean): NetProfit[] {
         const rate = this.getRateByMonths(months);
-        let total = capital;
+        const fee = this.calculateFee(capital);
+        const results: NetProfit[] = [];
 
-        if (isCompound) {
-            // Monthly profit + initial capital, profit rate increases monthly
-            total = capital * Math.pow(1 + rate, months);
-        } else {
-            // Same profit each month
-            total += capital * rate * months;
+        // Get 
+        for (let month = 1; month <= months; month++) {
+            let currentTotal: number;
+
+            if (isCompound) {
+                // Monthly profit + initial capital, profit rate increases monthly
+                currentTotal = capital * Math.pow(1 + rate, month);
+            } else {
+                // Same profit each month
+                currentTotal = capital + (capital * rate * month);
+            }
+
+            const isLastMonth = month === months;
+            const currentFee = isLastMonth ? fee : 0;
+            const profit = currentTotal - currentFee;
+
+            results.push({
+                capital,
+                fee: currentFee,
+                month,
+                profit,
+            });
         }
 
-        // Apply transaction fee
-        const fee = this.calculateFee(capital);
-        return { capital, fee: fee, profit: total - fee };
+        return results;
     }
 
     /**
@@ -38,7 +54,7 @@ export default class SimulationService {
         if (amount <= 1000) return amount * 0.02;
         if (amount <= 10000) return amount * 0.01;
         if (amount <= 35000) return amount * 0.005;
-        return amount * 0.025;
+        return amount * 0.0025;
     }
 
     /**
