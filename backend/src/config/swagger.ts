@@ -1,6 +1,9 @@
 import swaggerJsdoc from 'swagger-jsdoc';
+import { SwaggerTheme, SwaggerThemeNameEnum } from 'swagger-themes';
 
 import config from './index';
+
+const theme = new SwaggerTheme();
 
 const options = {
     apis: ['./src/routes/*.ts', './src/index.ts'],
@@ -28,6 +31,7 @@ const options = {
     },
 };
 
-const specs = swaggerJsdoc(options);
-
-export default specs;
+export const specs = swaggerJsdoc(options);
+export const theming = {
+    customCss: theme.getBuffer(SwaggerThemeNameEnum.ONE_DARK),
+};

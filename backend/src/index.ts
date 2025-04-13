@@ -5,7 +5,7 @@ import morgan from 'morgan';
 import swaggerUi from 'swagger-ui-express';
 
 import config from './config/index.ts';
-import specs from './config/swagger.ts';
+import { specs, theming } from './config/swagger.ts';
 import { createPaymentRouter } from './routes/payment.ts';
 import { createSimulationRouter } from './routes/simulation.ts';
 
@@ -44,7 +44,7 @@ app.get('/health', (_req: Request, res: Response) => {
 
 // Serve Swagger documentation only on development environments
 if (config.nodeEnv == 'development') {
-    app.use('/docs', swaggerUi.serve, swaggerUi.setup(specs));
+    app.use('/docs', swaggerUi.serve, swaggerUi.setup(specs, theming));
 }
 
 // 404 middleware
