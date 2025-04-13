@@ -4,6 +4,12 @@ import { type Request, type Response } from 'express';
 import PaymentService from '../services/payment.ts';
 
 export default class PaymentController {
+    private service: PaymentService;
+
+    constructor(service: PaymentService) {
+        this.service = service;
+    }
+
     /**
      * Check payment status for an address
      * @async
@@ -72,8 +78,7 @@ export default class PaymentController {
                 });
             }
 
-            const service = new PaymentService();
-            const paymentData = await service.generateQR(amount);
+            const paymentData = await this.service.createPayment(amount);
             res.status(201).json(paymentData);
         } catch (err) {
             if (axios.isAxiosError(err)) {
@@ -84,6 +89,44 @@ export default class PaymentController {
             }
 
             console.error(`Something went wrong in '/api/payments': ${err}`);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    }
+
+    /**
+     * Generate payment QR code
+     * @async
+     * @function generateQR
+     * @param {Request} req - Express request object
+     * @param {Response} res - Express response object
+     */
+    public async generateQR(req: Request, res: Response) {
+        try {
+            const { address, amount } = req.body;
+
+            if (!address || typeof address !== 'string') {
+                res.status(400).json({
+                    error: 'Invalid address provided',
+                    message: 'address should be a string',
+                });
+            }
+
+            // See https://www.rfctools.com/binance-smart-chain-address-validator/
+            if (!address?.match(/^0x[a-fA-F0-9]{40}$/)) {
+                res.status(400).json({ error: 'Invalid BSC address format' });
+            }
+
+            if (!amount || typeof amount !== 'number' || amount <= 0) {
+                res.status(400).json({
+                    error: 'Invalid amount provided',
+                    message: 'amount must be a number and its value must be higher than 0',
+                });
+            }
+
+            const qrCode = await this.service.generateQR(address, amount);
+            res.status(200).json(qrCode);
+        } catch (err) {
+            console.error(`Something went wrong in '/api/payments/qr': ${err}`);
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }

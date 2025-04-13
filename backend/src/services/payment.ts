@@ -1,7 +1,7 @@
 import axios from 'axios';
 import qrcode from 'qrcode';
 
-interface Payment {
+export interface Payment {
     accounts: string[];
     address: string;
     fundsGoal: number;
@@ -12,7 +12,7 @@ interface Payment {
     timeStart: number;
 }
 
-interface PaymentQr {
+export interface PaymentQr {
     accounts: string[];
     address: string;
     fundsGoal: number;
@@ -23,33 +23,12 @@ interface PaymentQr {
 
 export default class PaymentService {
     /**
-     * Generate payment QR code
-     * @async
-     * @param {number} amount - Investment amount in USD
-     * @returns {Promise<PaymentQr>} Payment details
-     */
-    public async generateQR(amount: number): Promise<PaymentQr | void> {
-        try {
-            const paymentData: Payment = await this.createPayment(amount);
-            // According to bscscan, the contract address given in the test specs belongs to BUSD.
-            // See https://bscscan.com/address/0xe9e7cea3dedca5984780bafc599bd69add087d56
-            const qrCode = await qrcode.toDataURL(
-                `busd:${paymentData.address}?amount=${paymentData.fundsGoal}`,
-            );
-            console.log(qrCode);
-            return { ...paymentData, qrCode };
-        } catch (err) {
-            console.error(err);
-        }
-    }
-
-    /**
      * Generate a new payment using the Disruptive Payments API
      * @async
      * @param {number} amount - Investment amount in USD
      * @returns {Promise<Payment>} Payment details
      */
-    private async createPayment(amount: number): Promise<Payment> {
+    public async createPayment(amount: number): Promise<Payment> {
         try {
             const response = await axios.post(
                 'https://my.disruptivepayments.io/api/payments/single',
@@ -72,7 +51,25 @@ export default class PaymentService {
             return response.data.data as Payment;
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (err) {
-            throw new Error('Failed to generate QR code');
+            throw new Error('Failed to generate payment');
+        }
+    }
+
+    /**
+     * Generate payment QR code
+     * @async
+     * @param {string} address - Wallet address to generate the QR code from
+     * @param {number} amount - USD amount to be paid
+     * @returns {Promise<string>} QR code encoded as base64
+     */
+    public async generateQR(address: string, amount: number): Promise<string | void> {
+        try {
+            // According to bscscan, the contract address given in the technical test specs belongs to BUSD (BNB).
+            // See https://bscscan.com/address/0xe9e7cea3dedca5984780bafc599bd69add087d56
+            const qrCode = await qrcode.toDataURL(`busd:${address}?amount=${amount}`);
+            return qrCode;
+        } catch (err) {
+            console.error(err);
         }
     }
 }

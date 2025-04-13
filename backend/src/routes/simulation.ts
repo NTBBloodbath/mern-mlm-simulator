@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
 import SimulationController from '../controllers/simulation';
+import SimulationService from '../services/simulation';
 
 /**
  * @typedef SimulationRoutes
@@ -8,7 +9,8 @@ import SimulationController from '../controllers/simulation';
  */
 export const createSimulationRouter = (): Router => {
     const router = Router();
-    const controller = new SimulationController();
+    const service = new SimulationService();
+    const controller = new SimulationController(service);
 
     /**
      * @swagger
@@ -54,7 +56,7 @@ export const createSimulationRouter = (): Router => {
      *                       type: number
      *                       example: 1020
      */
-    router.post('/', controller.calculateSimulation);
+    router.post('/', (req, res) => controller.calculateSimulation(req, res));
 
     /**
      * @swagger
@@ -99,7 +101,7 @@ export const createSimulationRouter = (): Router => {
      *                   type: number
      *                   example: 1020
      */
-    router.post('/export', controller.exportToCSV);
+    router.post('/export', (req, res) => controller.exportToCSV(req, res));
 
     return router;
 };

@@ -4,6 +4,12 @@ import { type Request, type Response } from 'express';
 import SimulationService, { type NetProfit } from '../services/simulation';
 
 export default class SimulationController {
+    private service: SimulationService;
+
+    constructor(service: SimulationService) {
+        this.service = service;
+    }
+
     public calculateSimulation(req: Request, res: Response) {
         try {
             // eslint-disable-next-line perfectionist/sort-objects
@@ -23,8 +29,7 @@ export default class SimulationController {
                 });
             }
 
-            const service = new SimulationService();
-            const calculation = service.calculateNetProfit(capital, months, isCompound);
+            const calculation = this.service.calculateNetProfit(capital, months, isCompound);
             res.status(200).json({ netAmount: calculation });
         } catch (err) {
             console.error(`Something went wrong in '/api/simulate': ${err}`);
