@@ -24,13 +24,18 @@ export default class PaymentController {
             if (!address || typeof address !== 'string') {
                 res.status(400).json({
                     error: 'Invalid address provided',
-                    message: 'address should be a string',
+                    message: 'address must be a string',
                 });
+                return;
             }
 
             // See https://www.rfctools.com/binance-smart-chain-address-validator/
             if (!address?.match(/^0x[a-fA-F0-9]{40}$/)) {
-                res.status(400).json({ error: 'Invalid BSC address format' });
+                res.status(400).json({
+                    error: 'Invalid address provided',
+                    message: 'invalid address format',
+                });
+                return;
             }
 
             const response = await axios.get(
@@ -71,11 +76,20 @@ export default class PaymentController {
         try {
             const { amount } = req.body;
 
-            if (!amount || typeof amount !== 'number' || amount <= 0) {
+            if (amount === undefined || typeof amount !== 'number') {
                 res.status(400).json({
                     error: 'Invalid amount provided',
-                    message: 'amount must be a number and its value must be higher than 0',
+                    message: 'amount must be a number',
                 });
+                return;
+            }
+
+            if (amount <= 0) {
+                res.status(400).json({
+                    error: 'Invalid amount provided',
+                    message: 'amount value must be higher than 0',
+                });
+                return;
             }
 
             const paymentData = await this.service.createPayment(amount);
@@ -107,13 +121,18 @@ export default class PaymentController {
             if (!address || typeof address !== 'string') {
                 res.status(400).json({
                     error: 'Invalid address provided',
-                    message: 'address should be a string',
+                    message: 'address must be a string',
                 });
+                return;
             }
 
             // See https://www.rfctools.com/binance-smart-chain-address-validator/
             if (!address?.match(/^0x[a-fA-F0-9]{40}$/)) {
-                res.status(400).json({ error: 'Invalid BSC address format' });
+                res.status(400).json({
+                    error: 'Invalid address provided',
+                    message: 'invalid address format',
+                });
+                return;
             }
 
             if (!amount || typeof amount !== 'number' || amount <= 0) {
@@ -121,6 +140,7 @@ export default class PaymentController {
                     error: 'Invalid amount provided',
                     message: 'amount must be a number and its value must be higher than 0',
                 });
+                return;
             }
 
             const qrCode = await this.service.generateQR(address, amount);

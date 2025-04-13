@@ -15,18 +15,44 @@ export default class SimulationController {
             // eslint-disable-next-line perfectionist/sort-objects
             const { capital, months, isCompound } = req.body;
 
-            if (!capital || typeof capital !== 'number' || capital <= 0) {
+            if (capital === undefined || typeof capital !== 'number') {
                 res.status(400).json({
-                    error: 'Invalid capital amount provided',
-                    message: 'capital must be a number and its value must be higher than 0',
+                    error: 'Invalid capital value provided',
+                    message: 'capital must be a number',
                 });
+                return;
             }
 
-            if (!months || typeof months !== 'number' || ![3, 6, 9, 12].includes(months)) {
+            if (capital <= 0) {
+                res.status(400).json({
+                    error: 'Invalid capital amount provided',
+                    message: 'capital value must be higher than 0',
+                });
+                return;
+            }
+
+            if (months === undefined || typeof months !== 'number') {
                 res.status(400).json({
                     error: 'Invalid months value provided',
-                    message: 'months must be a number and its value must be either 3, 6, 9, 12',
+                    message: 'months must be a number',
                 });
+                return;
+            }
+
+            if (![3, 6, 9, 12].includes(months)) {
+                res.status(400).json({
+                    error: 'Invalid months value provided',
+                    message: 'months value must be either 3, 6, 9, 12',
+                });
+                return;
+            }
+
+            if (typeof isCompound !== 'boolean') {
+                res.status(400).json({
+                    error: 'Invalid isCompound value provided',
+                    message: 'isCompound must be a boolean',
+                });
+                return;
             }
 
             const calculation = this.service.calculateNetProfit(capital, months, isCompound);
@@ -39,7 +65,37 @@ export default class SimulationController {
 
     public async exportToCSV(req: Request, res: Response) {
         try {
-            const data = req.body.netAmount;
+            const data: NetProfit = req.body.netAmount;
+
+            if (data === undefined) {
+                res.status(400).json({
+                    error: 'Invalid body provided',
+                    message: 'body is missing netAmount object',
+                });
+                return;
+            }
+            if (data.capital === undefined) {
+                res.status(400).json({
+                    error: 'Invalid body provided',
+                    message: 'netAmount object is missing capital field',
+                });
+                return;
+            }
+            if (data.fee === undefined) {
+                res.status(400).json({
+                    error: 'Invalid body provided',
+                    message: 'netAmount object is missing fee field',
+                });
+                return;
+            }
+            if (data.profit === undefined) {
+                res.status(400).json({
+                    error: 'Invalid body provided',
+                    message: 'netAmount object is missing profit field',
+                });
+                return;
+            }
+
             const csvOpts = {
                 fields: [
                     {

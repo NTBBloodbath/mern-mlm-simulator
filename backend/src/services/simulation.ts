@@ -6,10 +6,10 @@ export interface NetProfit {
 
 export default class SimulationService {
     /**
-     * Calculates the monthly benefits and applies fee
+     * Calculates the monthly profits and applies fee
      * @param capital Capital amount (aka base)
      * @param months Months of simulation
-     * @param isCompound Whether the benefits are compound or not
+     * @param isCompound Whether the profits are compound or not
      * @returns NetProfit
      */
     public calculateNetProfit(capital: number, months: number, isCompound: boolean): NetProfit {
@@ -17,16 +17,16 @@ export default class SimulationService {
         let total = capital;
 
         if (isCompound) {
-            // Monthly benefit + initial capital, benefit rate increases monthly
+            // Monthly profit + initial capital, profit rate increases monthly
             total = capital * Math.pow(1 + rate, months);
         } else {
-            // Same benefit each month
+            // Same profit each month
             total += capital * rate * months;
         }
 
         // Apply transaction fee
-        const fee = this.calculateFee(total);
-        return { capital, fee: Number(fee.toFixed(2)), profit: Number((total - fee).toFixed(2)) };
+        const fee = this.calculateFee(capital);
+        return { capital, fee: fee, profit: total - fee };
     }
 
     /**
@@ -42,8 +42,8 @@ export default class SimulationService {
     }
 
     /**
-     * Get the benefit rate according to the amount of months
-     * @param months Months to calculate the monthly benefit
+     * Get the profit rate according to the amount of months
+     * @param months Months to calculate the monthly profit
      * @returns number
      */
     private getRateByMonths(months: number): number {
