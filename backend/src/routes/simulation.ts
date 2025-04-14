@@ -44,17 +44,22 @@ export const createSimulationRouter = (): Router => {
      *               type: object
      *               properties:
      *                 netAmount:
-     *                   type: object
-     *                   properties:
-     *                     capital:
-     *                       type: number
-     *                       example: 1000
-     *                     fee:
-     *                       type: number
-     *                       example: 10.3
-     *                     profit:
-     *                       type: number
-     *                       example: 1020
+     *                   type: array
+     *                   items:
+     *                     type: object
+     *                     properties:
+     *                       capital:
+     *                         type: number
+     *                         example: 1000
+     *                       fee:
+     *                         type: number
+     *                         example: 20
+     *                       month:
+     *                         type: number
+     *                         example: 3
+     *                       profit:
+     *                         type: number
+     *                         example: 1010
      */
     router.post('/', (req, res) => controller.calculateSimulation(req, res));
 
@@ -72,17 +77,22 @@ export const createSimulationRouter = (): Router => {
      *           schema:
      *             properties:
      *               netAmount:
-     *                 type: object
-     *                 properties:
-     *                   capital:
-     *                     type: number
-     *                     example: 1000
-     *                   fee:
-     *                     type: number
-     *                     example: 10.3
-     *                   profit:
-     *                     type: number
-     *                     example: 1020
+     *                 type: array
+     *                 items:
+     *                   type: object
+     *                   properties:
+     *                     capital:
+     *                       type: number
+     *                       example: 1000
+     *                     fee:
+     *                       type: number
+     *                       example: 20
+     *                     month:
+     *                       type: number
+     *                       example: 3
+     *                     profit:
+     *                       type: number
+     *                       example: 1010
      *     responses:
      *       200:
      *         description: Successfully exported simulation data to CSV
@@ -91,15 +101,18 @@ export const createSimulationRouter = (): Router => {
      *             schema:
      *               type: object
      *               properties:
+     *                 month:
+     *                   type: number
+     *                   example: 3
      *                 capital:
      *                   type: number
      *                   example: 1000
      *                 fee:
      *                   type: number
-     *                   example: 10.3
+     *                   example: 20
      *                 profit:
      *                   type: number
-     *                   example: 1020
+     *                   example: 1010
      */
     router.post('/export', (req, res) => controller.exportToCSV(req, res));
 

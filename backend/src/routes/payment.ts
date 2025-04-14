@@ -30,29 +30,41 @@ export const createPaymentRouter = (): Router => {
      *                 example: 5
      *     responses:
      *       200:
-     *         description: Payment details with QR address
+     *         description: Payment details
      *         content:
      *           application/json:
      *             schema:
      *               type: object
      *               properties:
-     *                 address:
-     *                   type: string
-     *                   example: "0xBCC2029748B190817d0D448f07151EA12A08F182"
-     *                 network:
-     *                   type: string
-     *                   example: "BSC"
-     *                 fundsGoal:
+     *                 data:
+     *                   type: object
+     *                   properties:
+     *                     address:
+     *                       type: string
+     *                       example: "0xBCC2029748B190817d0D448f07151EA12A08F182"
+     *                     network:
+     *                       type: string
+     *                       example: "BSC"
+     *                     fundsGoal:
+     *                       type: number
+     *                       example: 5
+     *                     smartContractAddress:
+     *                       type: string
+     *                       example: "0xe9e7cea3dedca5984780bafc599bd69add087d56"
+     *                     accounts:
+     *                       type: array
+     *                       items:
+     *                         type: string
+     *                       example: ["0xe0bA37eFF02939576D2593c8B01b4361F453679F"]
+     *                 timeStart:
      *                   type: number
-     *                   example: 5
-     *                 smartContractAddress:
-     *                   type: string
-     *                   example: "0xe9e7cea3dedca5984780bafc599bd69add087d56"
-     *                 accounts:
-     *                   type: array
-     *                   items:
-     *                     type: string
-     *                   example: ["0xe0bA37eFF02939576D2593c8B01b4361F453679F"]
+     *                   example: 1742437744132
+     *                 timeEnd:
+     *                   type: number
+     *                   example: 1742437748255
+     *                 timeDelta:
+     *                   type: number
+     *                   example: 4123
      */
     router.post('/', (req, res) => controller.createPayment(req, res));
 
@@ -82,11 +94,9 @@ export const createPaymentRouter = (): Router => {
      *         content:
      *           application/json:
      *             schema:
-     *               type: object
-     *               properties:
-     *                 qrCode:
-     *                   type: string
-     *                   example: "data:image/png;base64,iVBOR..."
+     *               name: qrCode
+     *               type: string
+     *               example: "data:image/png;base64,iVBOR..."
      */
     router.post('/qr', (req, res) => controller.generateQR(req, res));
 
@@ -107,6 +117,64 @@ export const createPaymentRouter = (): Router => {
      *     responses:
      *       200:
      *         description: Current payment status and details
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 data:
+     *                   type: object
+     *                   properties:
+     *                     network:
+     *                       type: string
+     *                       example: "BSC"
+     *                     address:
+     *                       type: string
+     *                       example: "0xBCC2029748B190817d0D448f07151EA12A08F182"
+     *                     amountCaptured:
+     *                       type: number
+     *                       example: 0
+     *                     smartContractAddress:
+     *                       type: string
+     *                       example: "0xe9e7cea3dedca5984780bafc599bd69add087d56"
+     *                     smartContractSymbol:
+     *                       type: string
+     *                       example: "BUSD"
+     *                     status:
+     *                       type: string
+     *                       example: "WAITING"
+     *                     fundStatus:
+     *                       type: string
+     *                       example: "EXPIRED"
+     *                     processStep:
+     *                       type: number
+     *                       example: 11
+     *                     processTotalSteps:
+     *                       type: number
+     *                       example: 22
+     *                     fundsGoal:
+     *                       type: number
+     *                       example: 5
+     *                     fundsExpirationAt:
+     *                       type: number
+     *                       example: 1744566844
+     *                     currentBalance:
+     *                       type: number
+     *                       example: 0
+     *                     forwardAddresses:
+     *                       type: array
+     *                       items:
+     *                         type: string
+     *                       example: []
+     *                 timeStart:
+     *                   type: number
+     *                   example: 1742437744132
+     *                 timeEnd:
+     *                   type: number
+     *                   example: 1742437748255
+     *                 timeDelta:
+     *                   type: number
+     *                   example: 4123
      */
     router.get('/status', (req, res) => controller.checkPaymentStatus(req, res));
 
