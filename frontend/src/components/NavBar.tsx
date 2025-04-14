@@ -2,11 +2,11 @@ import { CodeBracketSquareIcon } from '@heroicons/react/24/outline';
 
 export default function NavBar() {
     return (
-        <header className="relative shadow-sm bg-gray-300">
+        <header className="relative shadow-sm bg-gray-300 border-b border-gray-400">
             <nav className="container mx-auto px-4 md:px-0">
                 <div className="flex items-center justify-between h-16">
                     <div className="flex items-center shrink-0">
-                        <a className="text-xl font-bold" href="/">
+                        <a className="text-xl font-bold hover:text-accent motion-reduce:transition-none transition-colors" href="/">
                             MERN MLM Simulator
                         </a>
                     </div>
@@ -17,7 +17,7 @@ export default function NavBar() {
                             href="https://github.com/NTBBloodbath/mern-mlm-simulator"
                         >
                             <CodeBracketSquareIcon className="h-6 w-6 inline-block mr-1" />
-                            <span className="font-semibold">Repository</span>
+                            <span className="font-semibold">Repositorio</span>
                         </a>
                     </div>
                 </div>

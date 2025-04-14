@@ -88,23 +88,23 @@ export default function App() {
 
                 {results.length > 0 && (
                     <div className="container mx-auto mt-8">
-                        <div className="flex justify-center-safe md:justify-evenly gap-2 md:gap-4 mb-4">
+                        <div className="flex flex-col md:flex-row items-center md:justify-evenly gap-2 md:gap-4 mb-8">
                             <button
-                                className="flex justify-center items-center bg-gray-600 text-white px-4 py-2 rounded-md motion-reduce:transition-none transition-colors duration-300 hover:bg-gray-800 md:min-w-[30%]"
+                                className="flex justify-center items-center bg-gray-600 text-white px-4 py-2 rounded-md motion-reduce:transition-none transition-colors duration-300 hover:bg-gray-800 min-w-[80%] md:min-w-[30%]"
                                 onClick={handleReset}
                             >
                                 <ArrowsPointingOutIcon className="h-6 w-6 mr-2" />
                                 Reset
                             </button>
                             <button
-                                className="flex justify-center items-center bg-purple-600 text-white px-4 py-2 rounded-md motion-reduce:transition-none transition-colors duration-300 hover:bg-purple-800 md:min-w-[30%]"
+                                className="flex justify-center items-center bg-purple-600 text-white px-4 py-2 rounded-md motion-reduce:transition-none transition-colors duration-300 hover:bg-purple-800 min-w-[80%] md:min-w-[30%]"
                                 onClick={handlePaymentStatus}
                             >
                                 <DocumentMagnifyingGlassIcon className="h-6 w-6 mr-2" />
                                 Revisar pago
                             </button>
                             <button
-                                className="flex justify-center items-center bg-green-600 text-white px-4 py-2 rounded-md motion-reduce:transition-none transition-colors duration-300 hover:bg-green-800 md:min-w-[30%]"
+                                className="flex justify-center items-center bg-green-600 text-white px-4 py-2 rounded-md motion-reduce:transition-none transition-colors duration-300 hover:bg-green-800 min-w-[80%] md:min-w-[30%]"
                                 onClick={handleDeposit}
                             >
                                 <QrCodeIcon className="h-6 w-6 mr-2" />
@@ -112,9 +112,11 @@ export default function App() {
                             </button>
                         </div>
 
+                        <hr className="mx-auto max-w-[80%] md:max-w-full text-gray-300" />
+
                         <ResultsTable data={results} />
                         <button
-                            className="mx-auto flex justify-center items-center bg-blue-600 text-white px-4 py-2 rounded-md motion-reduce:transition-none transition-colors duration-300 hover:bg-blue-800 min-w-[80%] md:min-w-full mt-4"
+                            className="mx-auto flex justify-center items-center bg-blue-600 text-white px-4 py-2 rounded-md motion-reduce:transition-none transition-colors duration-300 hover:bg-blue-800 min-w-[80%] md:min-w-full mt-8"
                             onClick={handleCsvExport}
                         >
                             Exportar a CSV

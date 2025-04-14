@@ -4,7 +4,7 @@ export default function ResultsTable({
     data: Array<{ capital: number; fee: number; month: number; profit: number }>;
 }) {
     return (
-        <div className="mx-auto overflow-x-auto rounded-lg shadow-md max-w-[80%] md:max-w-screen border border-gray-400 mt-8">
+        <div className="mx-auto overflow-x-auto rounded-lg shadow-md max-w-[80%] md:max-w-screen border-2 border-gray-400 mt-8">
             <table className="table-auto min-w-full">
                 <caption className="caption-bottom py-1 text-gray-600 bg-gray-200">
                     Capital inicial (USD): ${data[0].capital}; Fee (USD): $
@@ -19,7 +19,7 @@ export default function ResultsTable({
                 <tbody className="table-row-group">
                     {data.map((row) => (
                         <tr
-                            className="table-row hover:bg-gray-100 border-b border-b-gray-200"
+                            className="table-row hover:bg-gray-50 border-b border-b-gray-200"
                             key={row.month}
                         >
                             <td className="table-cell px-6 py-4 text-center">{row.month}</td>
