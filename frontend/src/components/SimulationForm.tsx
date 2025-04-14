@@ -30,8 +30,8 @@ export default function SimulationForm({
             onSubmit={handleSubmit}
         >
             <div className="mb-4">
-                <label className="flex items-center text-gray-700 font-semibold mb-2">
-                    <CurrencyDollarIcon className="h-6 w-6 inline-block mr-2" />
+                <label className="flex items-center mb-2 font-semibold text-gray-700">
+                    <CurrencyDollarIcon className="inline-block mr-2 w-6 h-6" />
                     Capital inicial (USD)
                 </label>
                 <input
@@ -47,12 +47,12 @@ export default function SimulationForm({
             </div>
 
             <div className="mb-4">
-                <label className="flex items-center text-gray-700 font-semibold mb-2">
-                    <CalendarIcon className="h-6 w-6 inline-block mr-2" />
+                <label className="flex items-center mb-2 font-semibold text-gray-700">
+                    <CalendarIcon className="inline-block mr-2 w-6 h-6" />
                     Plazo
                 </label>
                 <select
-                    className="form-select focus:ring-0 focus:border-accent w-full p-2 border-2 rounded-md cursor-pointer"
+                    className="p-2 w-full rounded-md border-2 cursor-pointer focus:ring-0 form-select focus:border-accent"
                     onChange={(e) => setMonths(Number(e.target.value))}
                     value={months}
                 >
@@ -64,10 +64,10 @@ export default function SimulationForm({
                 </select>
             </div>
 
-            <div className="mb-4 flex items-center">
+            <div className="flex items-center mb-4">
                 <input
                     checked={compound}
-                    className="form-checkbox checked:hover:bg-blue-500 checked:bg-accent focus:ring-0 checked:focus:bg-accent mr-2 cursor-pointer"
+                    className="mr-2 cursor-pointer focus:ring-0 form-checkbox checked:hover:bg-blue-500 checked:bg-accent checked:focus:bg-accent"
                     onChange={(e) => setCompound(e.target.checked)}
                     type="checkbox"
                 />
@@ -75,7 +75,7 @@ export default function SimulationForm({
             </div>
 
             <button
-                className="w-full bg-accent text-white py-2 px-4 rounded-md hover:bg-black motion-reduce:transition-none transition-colors duration-300"
+                className="py-2 px-4 w-full text-white rounded-md transition-colors duration-300 hover:bg-black bg-accent motion-reduce:transition-none"
                 type="submit"
             >
                 Simular

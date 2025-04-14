@@ -79,8 +79,8 @@ export default function App() {
     return (
         <>
             <NavBar />
-            <main className="container mx-auto min-h-screen mt-8">
-                <h1 className="text-3xl font-bold text-gray-800 mb-8 text-center">
+            <main className="container mx-auto mt-8 min-h-screen">
+                <h1 className="mb-8 text-3xl font-bold text-center text-gray-800">
                     Simulador de MLM
                 </h1>
 
@@ -88,26 +88,26 @@ export default function App() {
 
                 {results.length > 0 && (
                     <div className="container mx-auto mt-8">
-                        <div className="flex flex-col md:flex-row items-center md:justify-evenly gap-2 md:gap-4 mb-8">
+                        <div className="flex flex-col gap-2 items-center mb-8 md:flex-row md:gap-4 md:justify-evenly">
                             <button
                                 className="flex justify-center items-center bg-gray-600 text-white px-4 py-2 rounded-md motion-reduce:transition-none transition-colors duration-300 hover:bg-gray-800 min-w-[80%] md:min-w-[30%]"
                                 onClick={handleReset}
                             >
-                                <ArrowsPointingOutIcon className="h-6 w-6 mr-2" />
+                                <ArrowsPointingOutIcon className="mr-2 w-6 h-6" />
                                 Reset
                             </button>
                             <button
                                 className="flex justify-center items-center bg-purple-600 text-white px-4 py-2 rounded-md motion-reduce:transition-none transition-colors duration-300 hover:bg-purple-800 min-w-[80%] md:min-w-[30%]"
                                 onClick={handlePaymentStatus}
                             >
-                                <DocumentMagnifyingGlassIcon className="h-6 w-6 mr-2" />
+                                <DocumentMagnifyingGlassIcon className="mr-2 w-6 h-6" />
                                 Revisar pago
                             </button>
                             <button
                                 className="flex justify-center items-center bg-green-600 text-white px-4 py-2 rounded-md motion-reduce:transition-none transition-colors duration-300 hover:bg-green-800 min-w-[80%] md:min-w-[30%]"
                                 onClick={handleDeposit}
                             >
-                                <QrCodeIcon className="h-6 w-6 mr-2" />
+                                <QrCodeIcon className="mr-2 w-6 h-6" />
                                 Depositar ahora
                             </button>
                         </div>
